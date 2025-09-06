@@ -18,6 +18,11 @@ resource "cloudflare_zone_setting" "image_resizing" {
   setting_id = "image_resizing"
   value      = "on"
 }
+resource "cloudflare_zone_setting" "rocket_loader" {
+  zone_id    = data.cloudflare_zone.manbug.zone_id
+  setting_id = "rocket_loader"
+  value      = "on"
+}
 
 # security
 resource "cloudflare_zone_setting" "always_use_https" {

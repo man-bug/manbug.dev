@@ -12,6 +12,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
             enableSystem
             disableTransitionOnChange
             enableColorScheme
+            // https://github.com/pacocoursey/next-themes?tab=readme-ov-file#using-with-cloudflare-rocket-loader
+            scriptProps={{ "data-cfasync": "false" }}
         >
             {children}
         </NextThemesProvider>
