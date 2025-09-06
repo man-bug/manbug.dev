@@ -1,0 +1,3 @@
+{
+    "extends": "@manbug/config/typescript/base.json"
+}

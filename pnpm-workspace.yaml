@@ -1,0 +1,6 @@
+packages:
+    - "apps/**/*"
+    - "packages/**/*"
+    - "terraform"
+    - "!**/.next/standalone/**"
+    - "!**/.open-next/**"

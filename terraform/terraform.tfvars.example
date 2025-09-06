@@ -1,0 +1,6 @@
+#===============================================================================
+# CLOUDFLARE
+#===============================================================================
+cloudflare_account_id        = "your-account-id"
+cloudflare_dns_api_token     = "your-dns-key"
+cloudflare_workers_api_token = "your-workers-key"

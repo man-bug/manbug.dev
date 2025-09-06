@@ -1,0 +1,53 @@
+{
+    "name": "manbug.dev",
+    "private": true,
+    "author": "man-bug",
+    "license": "MIT",
+    "scripts": {
+        "[_]": "global",
+        "dev": "turbo dev",
+        "build": "turbo build",
+        "lint": "turbo lint",
+        "lint:fix": "turbo lint:fix",
+        "typecheck": "turbo typecheck",
+        "test": "turbo test",
+        "[__]": "global utils",
+        "clean": "turbo clean && rm -rf node_modules && rm -rf .turbo",
+        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "[___]": "terraform",
+        "tf:init": "turbo run init --filter=@manbug/terraform",
+        "tf:plan": "turbo run plan --filter=@manbug/terraform",
+        "tf:apply": "turbo run apply --filter=@manbug/terraform",
+        "tf:destroy": "turbo run destroy --filter=@manbug/terraform",
+        "tf:fmt": "turbo run fmt --filter=@manbug/terraform",
+        "tf:validate": "turbo run validate --filter=@manbug/terraform",
+        "[____]": "cloudflare",
+        "cf-typegen": "turbo cf-typegen",
+        "cf-build": "turbo cf-build",
+        "cf-preview": "turbo cf-preview",
+        "cf-deploy": "turbo cf-deploy",
+        "[_____]": "www",
+        "www:build": "turbo build --filter=@manbug/www",
+        "www:dev": "turbo dev --filter=@manbug/www"
+    },
+    "devDependencies": {
+        "@manbug/config/eslint": "workspace:*",
+        "@manbug/config/typescript": "workspace:*",
+        "eslint": "^9.35.0",
+        "prettier": "^3.6.2",
+        "prettier-plugin-tailwindcss": "^0.6.14",
+        "turbo": "^2.5.6",
+        "typescript": "^5.9.2"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "core-js-pure",
+            "esbuild",
+            "sharp"
+        ]
+    },
+    "packageManager": "pnpm@10.4.1",
+    "engines": {
+        "node": ">=20"
+    }
+}

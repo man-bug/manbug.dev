@@ -1,0 +1,70 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "ui": "tui",
+    "globalEnv": [
+        "NODE_ENV"
+    ],
+    "tasks": {
+        // global
+        "dev": {
+            "cache": false,
+            "persistent": true
+        },
+        "build": {
+            "dependsOn": [
+                "^build"
+            ],
+            "outputs": [
+                "dist/**",
+                ".next/**",
+                ".build/**",
+                ".astro/**"
+            ]
+        },
+        "lint": {},
+        "lint:fix": {},
+        "typecheck": {},
+        "test": {},
+        "clean": {},
+        "format": {},
+        // terraform
+        "init": {
+            "cache": false
+        },
+        "plan": {
+            "cache": false
+        },
+        "fmt": {},
+        "validate": {},
+        "apply": {
+            "cache": false,
+            "persistent": true
+        },
+        "destroy": {
+            "cache": false,
+            "persistent": true
+        },
+        // cloudflare / opennext
+        "cf-typegen": {
+            "cache": false,
+            "outputs": [
+                "cloudflare-env.d.ts"
+            ]
+        },
+        "cf-build": {
+            "dependsOn": [
+                "^build"
+            ],
+            "outputs": [
+                ".open-next/",
+                ".wrangler/**"
+            ]
+        },
+        "cf-preview": {
+            "persistent": true
+        },
+        "cf-deploy": {
+            "persistent": true
+        }
+    }
+}

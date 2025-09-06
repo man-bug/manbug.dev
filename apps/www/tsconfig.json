@@ -1,0 +1,30 @@
+{
+    "extends": "@manbug/config/typescript/nextjs.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ]
+        },
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ]
+    },
+    "types": [
+        "./cloudflare-env.d.ts",
+        "node"
+    ],
+    "include": [
+        "next-env.d.ts",
+        "next.config.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        ".next/types/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
