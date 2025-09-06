@@ -11,7 +11,7 @@ export default function Home() {
                 width={544}
                 height={544}
             />
-            <p className="font-mono">super cool guy.</p>
+            <p className="font-mono">stupendously cool guy.</p>
         </div>
     );
 }
