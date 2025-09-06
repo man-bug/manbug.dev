@@ -5,8 +5,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
     images: {
         loader: "custom",
-        loaderFile: "./cf-image-transform.ts"
-    }
+        loaderFile: "./cf-image-transform.ts",
+    },
 };
 
 export default nextConfig;
