@@ -1,0 +1,108 @@
+name: www CI/CD
+
+on:
+    # run on all pushes to any branch that touches www files
+    push:
+        paths:
+            - "apps/www/**"
+            - ".github/workflows/www.yml"
+    # run on all PRs to main that touch www files
+    pull_request:
+        branches: [main]
+        paths:
+            - "apps/www/**"
+    # manual trigger
+    workflow_dispatch:
+
+jobs:
+    # see what changed
+    changes:
+        runs-on: ubuntu-latest
+        outputs:
+            www: ${{ steps.filter.outputs.www }}
+            workflow: ${{ steps.filter.outputs.workflow }}
+        steps:
+            - uses: actions/checkout@v4
+            - uses: dorny/paths-filter@v3
+              id: filter
+              with:
+                  base: ${{ github.event.before }}
+                  ref: ${{ github.sha }}
+                  filters: |
+                      www:
+                        - 'apps/www/**'
+                      workflow:
+                        - '.github/workflows/www.yml'
+
+    # make sure everybody's happy
+    test:
+        runs-on: ubuntu-latest
+        needs: changes
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v3
+              with:
+                  version: 9.15.3
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: "pnpm"
+
+            - name: Install dependencies
+              run: pnpm install --filter={manbug.dev,@manbug/www}...
+
+            - name: Lint
+              run: pnpm --filter @manbug/www lint
+
+            - name: Cache for Turbo
+              uses: rharkor/caching-for-turbo@v1.8
+
+            - name: Build
+              run: pnpm turbo cf-build --filter @manbug/www
+
+            # TODO: actual tests
+
+    # only runs on main pushes that changed workflow or www
+    deploy-www:
+        needs: [test, changes]
+        if: |
+            github.event_name == 'workflow_dispatch' ||
+            (github.ref == 'refs/heads/main' && github.event_name != 'pull_request' &&
+            (needs.changes.outputs.www == 'true' || needs.changes.outputs.workflow == 'true'))
+
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v3
+              with:
+                  version: 9.15.3
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: "pnpm"
+
+            - name: Install dependencies
+              run: pnpm install --filter={manbug.dev,@manbug/www}...
+
+            - name: Cache for Turbo
+              uses: rharkor/caching-for-turbo@v1.8
+
+            - name: Build (cached hopefully)
+              run: pnpm turbo cf-build --filter @manbug/www
+
+            - name: Deploy to Cloudflare Workers
+              uses: cloudflare/wrangler-action@v3
+              with:
+                  apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                  accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+                  workingDirectory: "apps/www"
